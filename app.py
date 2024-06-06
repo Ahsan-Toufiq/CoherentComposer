@@ -5,6 +5,8 @@ import csv
 from werkzeug.utils import secure_filename
 import os
 
+import cc
+
 app = Flask(__name__)
 
 # Configuration
@@ -98,16 +100,46 @@ HTML_TEMPLATE = """
             color: #ffffff;
             width: 100%;
         }
+        .logo {
+    width: 80px;  /* Adjusted for better visibility */
+    height: auto;  /* Maintain aspect ratio */
+    padding: 10px; /* Adds space around the logo */
+}
+
+header div, nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0 20px; /* More readable navigation */
+}
+
+/* Ensure the header has sufficient padding and space */
+header {
+    padding: 15px 30px;
+    background-color: #333;
+    color: #ffffff;
+}
+
     </style>
 </head>
 <body>
     <header>
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <img src="static/image/logo.png" alt="Logo" class="logo" style="margin-right: auto;">
         <div>CoherentComposer Platform</div>
-        <nav>
+        <nav style="margin-left: auto;">
             <a href="/">Home</a>
             <a href="/about">About Us</a>
         </nav>
+    </div>
     </header>
+
+
     <main>
         <div class="container">
             <h1>Welcome to CoherentComposer</h1>
@@ -119,7 +151,7 @@ HTML_TEMPLATE = """
             <div id="outputText"></div>
         </div>
     </main>
-    <footer>� 2024 CoherentComposer. All rights reserved.</footer>
+    <footer> 2024 CoherentComposer. All rights reserved.</footer>
 
     <script>
         function addInputs() {
@@ -127,7 +159,7 @@ HTML_TEMPLATE = """
             var container = document.getElementById('inputContainer');
             container.innerHTML = ''; // Clear previous inputs
             for (var i = 0; i < number; i++) {
-                container.innerHTML += '<input type="text" name="category[]" placeholder="Enter Category ' + (i + 1) + '"/><br/>';
+                container.innerHTML += '<input type="text" id="box '+ i'" name="category[]" placeholder="Enter Category ' + (i + 1) + '"/><br/>';
             }
             container.innerHTML += '<button type="submit">Submit Categories</button>';
         }
@@ -148,7 +180,7 @@ HTML_TEMPLATE = """
                         body: formData
                     });
                     const data = await response.json();
-                    document.getElementById('outputText').textContent = data.generatedText;
+                    document.getElementById('outputText').textContent = 'File uploaded successfully.';
                 } catch (error) {
                     document.getElementById('outputText').textContent = 'Failed to upload file: ' + error.message;
                 }
@@ -175,7 +207,9 @@ def about():
 @app.route('/submit', methods=['POST'])
 def submit_form():
     categories = request.form.getlist('category[]')
-    return jsonify({'status': 'success', 'categories': categories})
+    # Generate the essay based on the categories
+    essay = generate_essay(categories)
+    return jsonify({'status': 'success', 'essay': essay})
 
 @app.route('/api/upload', methods=['POST'])
 def upload_file():
@@ -189,37 +223,16 @@ def upload_file():
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     try:
         file.save(file_path)
-        result = process_file(file_path)
-        return jsonify({'generatedText': result})
+        return jsonify({'status': 'success', 'message': 'File uploaded successfully'})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-def process_file(file_path):
-    if file_path.endswith('.pdf'):
-        return process_pdf(file_path)
-    elif file_path.endswith('.xlsx'):
-        return process_excel(file_path)
-    elif file_path.endswith('.csv'):
-        return process_csv(file_path)
-    else:
-        return "Unsupported file format."
-
-def process_pdf(file_path):
-    reader = PdfReader(file_path)
-    text = ''
-    for page in reader.pages:
-        text += page.extract_text() + '\n'
-    return text
-
-def process_excel(file_path):
-    df = pd.read_excel(file_path)
-    return df.to_json()
-
-def process_csv(file_path):
-    with open(file_path, mode='r') as file:
-        csv_reader = csv.reader(file)
-        data = [row for row in csv_reader]
-    return str(data)
+def generate_essay(categories):
+    # Example function to generate essay based on categories
+    essay = "Generated Essay:\n"
+    for category in categories:
+        essay += f"\nCategory: {category}\nContent related to {category}..."
+    return essay
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5005)
