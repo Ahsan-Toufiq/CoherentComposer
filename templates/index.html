@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coherent Composer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .bg {
+            background-image: url('static/image/background.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100%;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: white;
+        }
+
+        .content {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .title {
+            font-size: 2em;
+            text-align: center;
+        }
+
+        .compose-button {
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .compose-button:hover {
+            background-color: navy;
+        }
+
+        html, body {
+            height: 100%;
+            background-color: #333;
+            color: #FFFFFF;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header, footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #000;
+            color: #fff;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #222;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            border: 2px solid #555;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            color: #FFF;
+        }
+
+        input[type="number"], input[type="text"], input[type="file"], button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #3498DB;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #85C1E9;
+        }
+
+        #outputText {
+            background-color: #444;
+            color: #FFF;
+            padding: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #3498DB;
+            font-size: 14px;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            padding: 5px;
+        }
+
+        html {
+           scroll-behavior: smooth;
+        }
+
+        header {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #000;
+            color: #fff;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .fixed-header {
+            position: fixed;
+            opacity: 1;
+        }
+
+        .logo {
+            height: 120px;
+            width: auto;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .left-container {
+            flex: 0 1 30%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-right: 20px;
+            font-size: 15px;
+        }
+
+        .text-container {
+            justify-content: center;
+            text-align: left;
+            padding-left: 115px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 4em;
+            color: #ffffff;
+            margin-bottom: 50px;
+        }
+
+        .button-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .compose-button {
+            padding: 8px 5px;
+            background-color: #2d6cfe;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.25em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+            width: 125px;
+            display: inline-block;
+            text-align: center;
+            line-height: normal;
+            text-decoration: none;
+        }
+
+        .compose-button:hover {
+            background-color: #85C1E9;
+        }
+
+        .compose-button:active {
+            background-color: #3498DB;
+        }
+
+        .right-container {
+            flex: 0 1 70%;
+            position: relative;
+            background-image: url('static/image/banner.jpg'); /* Background image set here */
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            font-size: 12px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .overlay p {
+            color: white;
+            font-size: 2em;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- <img src="static/image/logo.png" alt="Logo" class="logo"> -->
+        <div><h1>Coherent Composer</h1></div>
+    </header>
+    <!-- Additional content of your page goes here -->
+
+    <!-- Start of Top Section -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/" style="font-size: 30px;">
+                <img src="static/image/logo.png" alt="Coherent Composer Logo" class="rounded-logo" style="height: 60px; width: auto; margin-right: 10px;">
+                Coherent Composer
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/" style="font-size: 20px;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about/" style="font-size: 20px;">About</a>
+                    </li>
+              </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="top-section">
+        <div class="left-container">
+            <div class="text-container">
+                <h1 style="text-align: justify;">
+                    Coherent Composer
+                </h1>
+            </div>
+            <div class="button-container">
+                <a href="#main" class="compose-button">Compose</a>
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="overlay">
+                <p>Our Contextual Text Analyzer is designed to streamline the process of categorizing sentences based on predefined keyword groups. This powerful tool utilizes advanced natural language processing techniques to analyze and sort text data, making it ideal for thematic studies, content filtering, and enhancing data organization.</p>
+            </div>
+        </div>
+    </div>
+    <!-- End of Top Section -->
+
+    <main>
+        <div id="main" class="container">
+            <h1 style="font-size: 38px; margin-bottom: 20px;">Welcome to Coherent Composer</h1>
+            <input type="number" id="number" placeholder="Enter number of categories" min="1" max="10" style="margin-top: 0;">            
+            <button onclick="addInputs()">Submit</button>
+            <form action="/submit" method="post" id="inputContainer"></form>
+            <input type="file" id="fileInput" style="margin-top: 10px;">
+            <button onclick="uploadFile()">Upload</button>
+            <div id="outputText"></div>
+        </div>
+    </main>
+    <footer>© 2024 CoherentComposer. All rights reserved.</footer>
+    
+    <script>
+        let numbers;
+        window.addEventListener('scroll', function() {
+            var header = document.querySelector('header');
+            var topSection = document.querySelector('.top-section');
+            var endOfTopSection = topSection.offsetTop + topSection.offsetHeight;
+    
+            if (window.pageYOffset > endOfTopSection) {
+                header.style.display = 'flex';
+                header.classList.add("fixed-header");
+            } else {
+                header.style.display = 'none';
+                header.classList.remove("fixed-header");
+            }
+        });
+    
+        function addInputs() {
+            var number = document.getElementById('number').value;
+            var container = document.getElementById('inputContainer');
+            container.innerHTML = '';
+            numbers = number; 
+            for (var i = 0; i < number; i++) {
+                container.innerHTML += '<input type="text" id="box' + i +'" name="category[]" placeholder="Enter Category ' + (i + 1) + '"/><br/>';
+            }
+            container.innerHTML += '<button type="submit">Submit Categories</button>';
+        }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            window.uploadFile = async () => {
+                const fileInput = document.getElementById('fileInput');
+                if (!fileInput.files.length) {
+                    document.getElementById('outputText').textContent = 'Please select a file first.';
+                    return;
+                }
+                let values = "";
+                for (let i=0; i < numbers; i++) {
+                    values += document.getElementById('box' + i).value + ", ";
+                }
+
+                console.log(values);
+                const file = fileInput.files[0];
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('numbers', values);
+
+                try {
+                    const response = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+                    document.getElementById('outputText').textContent = 'File uploaded successfully.';
+                } catch (error) {
+                    document.getElementById('outputText').textContent = 'Failed to upload file: ' + error.message;
+                }
+            };
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
