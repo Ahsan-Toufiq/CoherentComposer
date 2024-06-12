@@ -1,6 +1,3 @@
-.ipynb_checkpoints/
-Miniconda3-latest-Linux-x86_64.sh
-install.sh
-install.sh.1
-myenv/
-
+/__pycache__
+/.ipynb_checkpoints
+clean_dataset.csv
