@@ -2,9 +2,7 @@ import csv
 import spacy
 import tkinter as tk
 from tkinter import filedialog
-import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
 import os
 import google.generativeai as genai
 import pandas as pd
@@ -151,13 +149,7 @@ def process_column_data(text, column_name, executor, column_index, semaphore):
     return '\n'.join(results)
 
 def main(csv_file, categories):
-
-    
-
-    # Ensure user has left input empty 
-
-    # Select input/dataset/.csv file
-    selected_file = choose_csv_file()
+    selected_file = csv_file
 
     # Create list of column headings for output .csv file
     column_headings = []
@@ -182,8 +174,6 @@ def main(csv_file, categories):
     # Close the pool and wait for the work to finish
     pool.close()
     pool.join()
-
-
     #filtered_data = filter_context_related_sentences(data,keywords)
 
     with open('clean_dataset.csv', 'w', newline='') as file:
@@ -218,4 +208,3 @@ def main(csv_file, categories):
     final_prompt = "Write an essay about " + ", ".join(column_texts.keys()) + " of Venus."
     final_essay = generate_content_chunk(combined_text, final_prompt, "final")
     return final_essay
-

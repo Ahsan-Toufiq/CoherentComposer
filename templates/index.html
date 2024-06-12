@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coherent Composer</title>
+    <link rel="icon" href='static/image/favicon.ico' type="image/x-ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -91,7 +92,17 @@
             justify-content: center;
             padding: 20px;
         }
-
+        #outputText {
+            background-color: #444;
+            color: #FFF;
+            padding: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #3498DB;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+            overflow-x: auto; /* Ensure any overflow content is scrollable horizontally */
+        }
         .container {
             background: #222;
             padding: 20px;
@@ -266,12 +277,9 @@
 </head>
 <body>
     <header>
-        <!-- <img src="static/image/logo.png" alt="Logo" class="logo"> -->
         <div><h1>Coherent Composer</h1></div>
     </header>
-    <!-- Additional content of your page goes here -->
 
-    <!-- Start of Top Section -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
         <div class="container-fluid">
             <a class="navbar-brand" href="/" style="font-size: 30px;">
@@ -294,10 +302,11 @@
             </div>
         </div>
     </nav>
+
     <div class="top-section">
         <div class="left-container">
             <div class="text-container">
-                <h1 style="text-align: justify;">
+                <h1 style="text-align: center;">
                     Coherent Composer
                 </h1>
             </div>
@@ -311,20 +320,27 @@
             </div>
         </div>
     </div>
-    <!-- End of Top Section -->
 
     <main>
         <div id="main" class="container">
             <h1 style="font-size: 38px; margin-bottom: 20px;">Welcome to Coherent Composer</h1>
             <input type="number" id="number" placeholder="Enter number of categories" min="1" max="10" style="margin-top: 0;">            
             <button onclick="addInputs()">Submit</button>
-            <form action="/submit" method="post" id="inputContainer"></form>
-            <input type="file" id="fileInput" style="margin-top: 10px;">
-            <button onclick="uploadFile()">Upload</button>
-            <div id="outputText"></div>
+            <form method="post" id="inputContainer" enctype="multipart/form-data" action="/submit">
+                <div id="categoryInputs"></div>
+                <input type="file" name="file" id="fileInput" style="margin-top: 10px;">
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+        <div id="outputText">
+            <h3 style="text-align: justify;">Generated Essay</h3>
+            {% if essay %}
+                <pre style="font-size: large; color: white;">{{ essay }}</pre>
+            {% endif %}
         </div>
     </main>
-    <footer>© 2024 CoherentComposer. All rights reserved.</footer>
+    
+    <footer>?? 2024 CoherentComposer. All rights reserved.</footer>
     
     <script>
         let numbers;
@@ -344,45 +360,13 @@
     
         function addInputs() {
             var number = document.getElementById('number').value;
-            var container = document.getElementById('inputContainer');
+            var container = document.getElementById('categoryInputs');
             container.innerHTML = '';
             numbers = number; 
             for (var i = 0; i < number; i++) {
                 container.innerHTML += '<input type="text" id="box' + i +'" name="category[]" placeholder="Enter Category ' + (i + 1) + '"/><br/>';
             }
-            container.innerHTML += '<button type="submit">Submit Categories</button>';
         }
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            window.uploadFile = async () => {
-                const fileInput = document.getElementById('fileInput');
-                if (!fileInput.files.length) {
-                    document.getElementById('outputText').textContent = 'Please select a file first.';
-                    return;
-                }
-                let values = "";
-                for (let i=0; i < numbers; i++) {
-                    values += document.getElementById('box' + i).value + ", ";
-                }
-
-                console.log(values);
-                const file = fileInput.files[0];
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('numbers', values);
-
-                try {
-                    const response = await fetch('/api/upload', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const data = await response.json();
-                    document.getElementById('outputText').textContent = 'File uploaded successfully.';
-                } catch (error) {
-                    document.getElementById('outputText').textContent = 'Failed to upload file: ' + error.message;
-                }
-            };
-        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -390,3 +374,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
 </html>
+<!-- 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html> -->
