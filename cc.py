@@ -1,7 +1,5 @@
 import csv 
 import spacy
-import tkinter as tk
-from tkinter import filedialog
 import pandas as pd
 import os
 import google.generativeai as genai
@@ -104,20 +102,20 @@ class InvalidInput(Exception):
         super().__init__(self.message)
 
 # function to choose .csv(dataset file) via a dialog box
-def choose_csv_file():
-    root = tk.Tk()
-    root.withdraw()  
+# def choose_csv_file():
+#     root = tk.Tk()
+#     root.withdraw()  
 
-    file_path = filedialog.askopenfilename(
-        title="Select a CSV file",
-        filetypes=[("CSV files", "*.csv")]
-    )
-    if file_path: 
-        print(f"File selected: {file_path}")
-    else:
-        print("No file was selected.")
+    # file_path = filedialog.askopenfilename(
+    #     title="Select a CSV file",
+    #     filetypes=[("CSV files", "*.csv")]
+    # )
+    # if file_path: 
+    #     print(f"File selected: {file_path}")
+    # else:
+    #     print("No file was selected.")
 
-    return file_path
+    # return file_path
 
 def split_data(data, num_parts):
     length = len(data)
